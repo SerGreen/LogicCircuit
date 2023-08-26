@@ -50,7 +50,7 @@ namespace LogicCircuit {
 			}
 
 			foreach(CircuitSymbol symbol in current.CircuitSymbols()) {
-				if(!(symbol.Circuit is CircuitProbe)) {
+                if (!(symbol.Circuit is CircuitProbe)) {
 					foreach(Jam jam in symbol.Jams()) {
 						if(this.stopPending) return null;
 						GridPoint point = jam.AbsolutePoint;
@@ -66,18 +66,44 @@ namespace LogicCircuit {
 
 			HashSet<Wire> bad = new HashSet<Wire>();
 			foreach(Conductor conductor in current.ConductorMap().Conductors) {
-				int first = 0;
-				foreach(Jam jam in connected(conductor)) {
-					if(this.stopPending) return null;
-					if(first == 0) {
+                int first = 0;
+				int count = 0;
+
+                foreach (Jam jam in connected(conductor)) {
+					count++;
+
+					if (this.stopPending) return null;
+					if (first == 0) {
 						first = jam.Pin.BitWidth;
-					} else if(first != jam.Pin.BitWidth) {
-						bad.UnionWith(conductor.Wires);
-						break;
+					}
+					else {
+						if (first != jam.Pin.BitWidth) {
+							bad.UnionWith(conductor.Wires);
+							break;
+						}
 					}
 				}
-				if(this.stopPending) return null;
+
+				// Check if wire is connected only to one thing (not connecting two or more things together)
+                if (count <= 1) {
+                    bad.UnionWith(conductor.Wires);
+                }
+
+				// Check if wire is dangling
+				List<GridPoint> allPoints = conductor.Wires.SelectMany(c => new[] {c.Point1, c.Point2}).ToList();
+				foreach (Wire wire in conductor.Wires) {
+					foreach (GridPoint point in new[] {wire.Point1, wire.Point2}) {
+						// wire is hanging when one end is not connected to any jam or other wires
+                        if (allPoints.Count(x => x == point) == 1 && jams.TryGetValue(point, out _) == false) {
+                            bad.Add(wire);
+                            break;
+                        }
+                    }
+				}
+
+                if (this.stopPending) return null;
 			}
+
 			return bad;
 		}
 
@@ -90,17 +116,21 @@ namespace LogicCircuit {
 
 				HashSet<Wire>? bad = this.Bad(current);
 				void redraw() {
-					List<Wire> list = this.badWires.Except(bad).ToList();
+					List<Wire> list = current.Wires().Except(bad).ToList();
+					//List<Wire> list = this.badWires.Except(bad).ToList();
 					foreach(Wire wire in list.Where(w => !w.IsDeleted())) {
 						if(this.stopPending) return;
 						wire.WireGlyph.Stroke = Symbol.WireStroke;
-					}
+                        wire.WireGlyph.StrokeThickness = 1;
+                    }
 					this.badWires.ExceptWith(list);
 					foreach(Wire wire in bad.Where(w => !this.badWires.Contains(w))) {
 						if(this.stopPending) return;
 						this.badWires.Add(wire);
 						wire.WireGlyph.Stroke = Symbol.BadWireStroke;
-					}
+						wire.WireGlyph.StrokeThickness = 2;
+
+                    }
 				}
 				if(this.logicalCircuit != current) {
 					this.badWires.Clear();
