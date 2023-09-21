@@ -49,7 +49,7 @@ namespace LogicCircuit {
 
 		public void TurnOn() {
 			if(FunctionLedMatrix.brush == null) {
-				Color[] color = new Color[] { Colors.Red, Colors.Lime, Colors.Blue };
+				Color[] color = new Color[] { Colors.Red, Colors.Lime, Colors.DodgerBlue };
 				FunctionLedMatrix.brush = new Brush[1 << LedMatrix.MaxBitsPerLed];
 				FunctionLedMatrix.brush[0] = (Brush)App.Current.FindResource("LedMatrixOff");
 				for(int i = 1; i < FunctionLedMatrix.brush.Length; i++) {
