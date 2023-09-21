@@ -962,9 +962,7 @@ namespace LogicCircuit {
 				}
 				if(wire != null) {
 					marker = this.FindPointMarkerNear(point);
-					if(marker == null) {
-						marker = this.FindMarker(wire);
-					}
+					marker ??= this.FindMarker(wire);
 					if(marker == null) {
 						symbol = wire;
 					} else if(this.SelectionCount == 1) {
@@ -1019,7 +1017,7 @@ namespace LogicCircuit {
 		public void DiagramMouseUp(MouseEventArgs e) {
 			if(this.InEditMode) {
 				if(this.movingMarker != null) {
-					this.FinishMove(e.GetPosition(this.Diagram), (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.None);
+					this.FinishMove(e.GetPosition(this.Diagram), !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift));
 				}
 			}
 			if(this.panning) {
@@ -1070,7 +1068,15 @@ namespace LogicCircuit {
 					} else if(Keyboard.Modifiers == (ModifierKeys.Shift | ModifierKeys.Control)) {
 						this.SelectConductor(wire);
 						this.StartMove(this.FindMarker(wire)!, e.GetPosition(this.Diagram));
-					} else {
+					} else if(Keyboard.Modifiers == ModifierKeys.Alt) {
+                        this.ClearSelection();
+                        this.StartMove(this.SelectSymbol(wire), e.GetPosition(this.Diagram));
+						Marker? marker = this.FindMarker(wire);
+						if (marker is not null) {
+							this.MarkerMouseDown(marker, e);
+                            return;
+                        }
+                    } else {
 						Point point = e.GetPosition(this.Diagram);
 						if(Editor.IsPinClose(point, Symbol.ScreenPoint(wire.Point1)) || Editor.IsPinClose(point, Symbol.ScreenPoint(wire.Point2))) {
 							this.StartWire(point);
@@ -1083,7 +1089,7 @@ namespace LogicCircuit {
 					return;
 				}
 
-				if((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) {
+				if(Keyboard.Modifiers.HasFlag(ModifierKeys.Control)) {
 					this.Select(symbol);
 				} else {
 					this.ClearSelection();
@@ -1124,7 +1130,9 @@ namespace LogicCircuit {
 					return;
 				} else if(Keyboard.Modifiers == ModifierKeys.Alt) {
 					this.Split(wire, Symbol.GridPoint(e.GetPosition(this.Diagram)));
-					return;
+                    Point point = e.GetPosition(this.Diagram);
+                    this.StartWire(point);
+                    return;
 				}
 			}
 
