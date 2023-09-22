@@ -157,8 +157,9 @@ namespace LogicCircuit {
 		public LambdaUICommand CommandPower => new LambdaUICommand(Properties.Resources.CommandCircuitPower, o => this.Power = !this.Power, new KeyGesture(Key.W, ModifierKeys.Control)) {
 			IconPath = "Icon/CircuitPower.xaml"
 		};
+        public LambdaUICommand CommandMergeFixWires => new LambdaUICommand(Properties.Resources.CommandMergeFixWires, o => this.InEditMode, o => this.MergeFixWires());
 
-		public LambdaUICommand CommandReport => new LambdaUICommand(Properties.Resources.CommandToolsReport, o => {
+        public LambdaUICommand CommandReport => new LambdaUICommand(Properties.Resources.CommandToolsReport, o => {
 			LogicalCircuit root = this.Project.LogicalCircuit;
 			if(this.CircuitRunner != null) {
 				CircuitMap? map = this.CircuitRunner.VisibleMap;
@@ -875,9 +876,28 @@ namespace LogicCircuit {
 			this.Mainframe.ShowDialog(new DialogFind(this));
 		}
 
-		//--- Event Handling ---
+        public void MergeFixWires() {
+            if (this.InEditMode) {
+                foreach (Conductor conductor in this.Project.LogicalCircuit.ConductorMap().Conductors) {
+					List<Wire> wires = conductor.Wires.ToList();
 
-		public void DiagramLostFocus() {
+					for (int i=0; i<wires.Count; i++) {
+						for (int j=i+1; j<wires.Count; j++) {
+							Wire wireA = wires[i];
+							Wire wireB = wires[j];
+
+							conductor.JunctionPoints()
+						}
+					}
+						this.Select(wire);
+					}
+				}
+            }
+        }
+
+        //--- Event Handling ---
+
+        public void DiagramLostFocus() {
 			this.CancelMove();
 		}
 
