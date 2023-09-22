@@ -3,14 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicCircuit", "LogicCircuit\LogicCircuit.csproj", "{BEB2A373-887A-412D-87B9-DB105E89597D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{1F9944A5-5A8C-4298-A2A7-B57FBBE6D6CD} = {1F9944A5-5A8C-4298-A2A7-B57FBBE6D6CD}
-		{B543E594-A653-4E16-9203-5C833D430A8C} = {B543E594-A653-4E16-9203-5C833D430A8C}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicCircuit.UnitTest", "LogicCircuit.UnitTest\LogicCircuit.UnitTest.csproj", "{23EA94C3-FD37-445C-98FA-2355ACC31B5E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CA299D44-CDB9-4DC6-A994-1C54069E542E}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -26,6 +18,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{AB5DC13F
 	ProjectSection(SolutionItems) = preProject
 		Tools\Directory.Build.props = Tools\Directory.Build.props
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicCircuit", "LogicCircuit\LogicCircuit.csproj", "{BEB2A373-887A-412D-87B9-DB105E89597D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F9944A5-5A8C-4298-A2A7-B57FBBE6D6CD} = {1F9944A5-5A8C-4298-A2A7-B57FBBE6D6CD}
+		{B543E594-A653-4E16-9203-5C833D430A8C} = {B543E594-A653-4E16-9203-5C833D430A8C}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicCircuit.UnitTest", "LogicCircuit.UnitTest\LogicCircuit.UnitTest.csproj", "{23EA94C3-FD37-445C-98FA-2355ACC31B5E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResourceWrapper.Generator", "Tools\ResourceWrapper.Generator\ResourceWrapper.Generator.csproj", "{B543E594-A653-4E16-9203-5C833D430A8C}"
 EndProject

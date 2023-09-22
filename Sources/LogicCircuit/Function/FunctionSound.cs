@@ -21,7 +21,7 @@ namespace LogicCircuit {
 
 		public FunctionSound(CircuitState circuitState, int parameter) : base(circuitState, parameter) {
 			if(FunctionSound.player == null) {
-				FunctionSound.player = new SoundPlayer(Assembly.GetExecutingAssembly().GetManifestResourceStream("LogicCircuit.Properties.default.wav"));
+				FunctionSound.player = new SoundPlayer(Assembly.GetExecutingAssembly().GetManifestResourceStream("LogicCircuit.Properties.buzzer800hz.wav"));
 				FunctionSound.player.LoadAsync();
 			}
 			FunctionSound.playCount = 0;
