@@ -828,13 +828,6 @@ namespace LogicCircuit.Properties {
 		}
 
 		/// <summary>
-		/// Looks up a localized string similar to Project Report.
-		/// </summary>
- 		public static string CommandMergeFixWires {
-			get { return ResourceManager.GetString("CommandMergeFixWires", Culture); }
-		}
-
-		/// <summary>
 		/// Looks up a localized string similar to https://www.logiccircuit.org/help.html.
 		/// </summary>
  		public static string HelpContent {
@@ -3158,6 +3151,13 @@ namespace LogicCircuit.Properties {
 		/// </summary>
  		public static string SymbolShapeMux {
 			get { return ResourceManager.GetString("SymbolShapeMux", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to Merge all segmented wires.
+		/// </summary>
+ 		public static string CommandMergeFixWires {
+			get { return ResourceManager.GetString("CommandMergeFixWires", Culture); }
 		}
 	}
 }

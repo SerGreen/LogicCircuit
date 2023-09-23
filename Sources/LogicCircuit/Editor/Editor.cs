@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.Scripting.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
@@ -157,7 +159,9 @@ namespace LogicCircuit {
 		public LambdaUICommand CommandPower => new LambdaUICommand(Properties.Resources.CommandCircuitPower, o => this.Power = !this.Power, new KeyGesture(Key.W, ModifierKeys.Control)) {
 			IconPath = "Icon/CircuitPower.xaml"
 		};
-        public LambdaUICommand CommandMergeFixWires => new LambdaUICommand(Properties.Resources.CommandMergeFixWires, o => this.InEditMode, o => this.MergeFixWires());
+        public LambdaUICommand CommandMergeFixWires => new LambdaUICommand(Properties.Resources.CommandMergeFixWires, o => this.InEditMode, o => this.MergeFixWires(), new KeyGesture(Key.M, ModifierKeys.Control)) {
+            IconPath = "Icon/CircuitTable.xaml"
+        };
 
         public LambdaUICommand CommandReport => new LambdaUICommand(Properties.Resources.CommandToolsReport, o => {
 			LogicalCircuit root = this.Project.LogicalCircuit;
@@ -877,22 +881,41 @@ namespace LogicCircuit {
 		}
 
         public void MergeFixWires() {
+            Console.Beep(200, 200);
             if (this.InEditMode) {
-                foreach (Conductor conductor in this.Project.LogicalCircuit.ConductorMap().Conductors) {
-					List<Wire> wires = conductor.Wires.ToList();
+                var allPoints = this.Project.LogicalCircuit.ConductorMap().Conductors.SelectMany(conductor => conductor.JunctionPoints(2, 2)).ToList();
+				foreach(GridPoint point in allPoints.Take(1)) {
+                    Wire[]? wires = this.Project.LogicalCircuit.Wires().Where(wire => wire.Point1 == point || wire.Point2 == point).ToArray<Wire>();
+                    Debug.Assert(wires.Length == 2);
 
-					for (int i=0; i<wires.Count; i++) {
-						for (int j=i+1; j<wires.Count; j++) {
-							Wire wireA = wires[i];
-							Wire wireB = wires[j];
+                    // if two wires are colinear (horizontaly or verticaly)
+                    if (wires[0].X1 == wires[0].X2 && wires[1].X1 == wires[1].X2 ||
+                        wires[0].Y1 == wires[0].Y2 && wires[1].Y1 == wires[1].Y2) {
+                        bool success = this.Merge(wires[0], wires[1]);
+                        Debug.Assert(success);
+                    }
 
-							conductor.JunctionPoints()
-						}
-					}
-						this.Select(wire);
-					}
-				}
+                    Console.Beep(400, 50);
+					System.Threading.Thread.Sleep(250);
+                    //this.CircuitProject.IsFrozen
+                }
+
+    //            foreach (Conductor conductor in this.Project.LogicalCircuit.ConductorMap().Conductors) {
+				//	foreach (GridPoint point in conductor.JunctionPoints(2, 2)) {
+				//		Wire[]? wires = this.Project.LogicalCircuit.Wires().Where(wire => wire.Point1 == point || wire.Point2 == point).ToArray<Wire>();
+				//		Assert.Equals(wires.Length, 2);
+
+				//		// if two wires are colinear (horizontaly or verticaly)
+				//		if (wires[0].X1 == wires[0].X2 && wires[1].X1 == wires[1].X2 ||
+				//			wires[0].Y1 == wires[0].Y2 && wires[1].Y1 == wires[1].Y2) {
+				//			bool success = this.Merge(wires[0], wires[1]);
+				//			Assert.Equals(success, true);
+				//		}
+				//	}
+				//}
+                this.ClearSelection();
             }
+            Console.Beep(1000, 200);
         }
 
         //--- Event Handling ---

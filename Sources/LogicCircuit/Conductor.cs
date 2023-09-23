@@ -42,5 +42,6 @@ namespace LogicCircuit {
 		}
 
 		public IEnumerable<GridPoint> JunctionPoints(int minCount) => this.pointMap.Where(pair => minCount <= pair.Value).Select(pair => pair.Key);
+		public IEnumerable<GridPoint> JunctionPoints(int minCount, int maxCount) => this.pointMap.Where(pair => minCount <= pair.Value && maxCount >= pair.Value).Select(pair => pair.Key);
 	}
 }

@@ -124,6 +124,8 @@
 				<lc:CommandMenuItem Command="{Binding Path=Editor.CommandSelectAllProbes}"/>
 				<lc:CommandMenuItem Command="{Binding Path=Editor.CommandSelectAllProbesWithWire}"/>
 				<Separator />
+				<lc:CommandMenuItem Command="{Binding Path=Editor.CommandMergeFixWires}"/>
+				<Separator />
 				<lc:CommandMenuItem Command="{Binding Path=Editor.CommandRotateLeft}"/>
 				<lc:CommandMenuItem Command="{Binding Path=Editor.CommandRotateRight}"/>
 			</MenuItem>

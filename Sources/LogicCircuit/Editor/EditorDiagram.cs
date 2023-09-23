@@ -393,7 +393,7 @@ namespace LogicCircuit {
 			return false;
 		}
 
-		private bool Merge(Wire wire1, Wire wire2) {
+		protected bool Merge(Wire wire1, Wire wire2) {
 			LogicalCircuit logicalCircuit = this.Project.LogicalCircuit;
 			Tracer.Assert(wire1.LogicalCircuit == logicalCircuit && wire2.LogicalCircuit == logicalCircuit);
 			GridPoint point1, point2;
