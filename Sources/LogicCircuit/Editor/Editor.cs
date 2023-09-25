@@ -881,10 +881,12 @@ namespace LogicCircuit {
 		}
 
         public void MergeFixWires() {
-            Console.Beep(200, 200);
             if (this.InEditMode) {
-                var allPoints = this.Project.LogicalCircuit.ConductorMap().Conductors.SelectMany(conductor => conductor.JunctionPoints(2, 2)).ToList();
-				foreach(GridPoint point in allPoints.Take(1)) {
+				// it deadlocks for some reason if you try to merge more than 1 wire
+				// can't be bothered to understand why
+				var allPoints = this.Project.LogicalCircuit.ConductorMap().Conductors.SelectMany(conductor => conductor.JunctionPoints(2, 2));
+				int merges = 0;
+				foreach(GridPoint point in allPoints) {
                     Wire[]? wires = this.Project.LogicalCircuit.Wires().Where(wire => wire.Point1 == point || wire.Point2 == point).ToArray<Wire>();
                     Debug.Assert(wires.Length == 2);
 
@@ -893,29 +895,16 @@ namespace LogicCircuit {
                         wires[0].Y1 == wires[0].Y2 && wires[1].Y1 == wires[1].Y2) {
                         bool success = this.Merge(wires[0], wires[1]);
                         Debug.Assert(success);
+						merges++;
+						break;	// remove if deadlock is resolved
                     }
-
-                    Console.Beep(400, 50);
-					System.Threading.Thread.Sleep(250);
-                    //this.CircuitProject.IsFrozen
                 }
-
-    //            foreach (Conductor conductor in this.Project.LogicalCircuit.ConductorMap().Conductors) {
-				//	foreach (GridPoint point in conductor.JunctionPoints(2, 2)) {
-				//		Wire[]? wires = this.Project.LogicalCircuit.Wires().Where(wire => wire.Point1 == point || wire.Point2 == point).ToArray<Wire>();
-				//		Assert.Equals(wires.Length, 2);
-
-				//		// if two wires are colinear (horizontaly or verticaly)
-				//		if (wires[0].X1 == wires[0].X2 && wires[1].X1 == wires[1].X2 ||
-				//			wires[0].Y1 == wires[0].Y2 && wires[1].Y1 == wires[1].Y2) {
-				//			bool success = this.Merge(wires[0], wires[1]);
-				//			Assert.Equals(success, true);
-				//		}
-				//	}
-				//}
                 this.ClearSelection();
+
+				if (merges == 0) {
+					Console.Beep(800, 80);
+				}
             }
-            Console.Beep(1000, 200);
         }
 
         //--- Event Handling ---
