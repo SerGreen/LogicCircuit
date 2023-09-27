@@ -13,7 +13,11 @@ namespace LogicCircuit {
 
 		public override void Redraw() {
 			LogicalCircuit current = this.CurrentLogicalCircuit;
-			if(current != this.lastLogicalCircuit) {
+			// making this unconditional fixes matrix not updating when switching to a different instance of the same circuit
+			// it also makes matrices update every tick
+			// this can be improved by making it check if current is the same instance of circuit instead
+			// i don't care enough though
+			if(true || current != this.lastLogicalCircuit) {
 				this.lastLogicalCircuit = current;
 				for(int i = 0; i < this.state.Length; i++) {
 					this.state[i] = -1;
