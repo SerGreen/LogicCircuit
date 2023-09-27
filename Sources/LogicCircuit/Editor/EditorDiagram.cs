@@ -343,7 +343,7 @@ namespace LogicCircuit {
 			return null;
 		}
 
-		private Jam? JamAt(GridPoint point) {
+		protected Jam? JamAt(GridPoint point) {
 			foreach(CircuitSymbol symbol in this.Project.LogicalCircuit.CircuitSymbols()) {
 				if(symbol.X <= point.X && point.X <= symbol.X + symbol.Circuit.SymbolWidth && symbol.Y <= point.Y && point.Y <= symbol.Y + symbol.Circuit.SymbolHeight) {
 					foreach(Jam jam in symbol.Jams()) {

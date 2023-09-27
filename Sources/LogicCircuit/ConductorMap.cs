@@ -62,5 +62,6 @@ namespace LogicCircuit {
 		}
 
 		public IEnumerable<GridPoint> JunctionPoints(int minCount) => this.Conductors.SelectMany(conductor => conductor.JunctionPoints(minCount));
+		public IEnumerable<GridPoint> JunctionPoints(int minCount, int maxCount) => this.Conductors.SelectMany(conductor => conductor.JunctionPoints(minCount, maxCount));
 	}
 }

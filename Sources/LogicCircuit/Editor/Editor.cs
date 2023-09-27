@@ -884,7 +884,7 @@ namespace LogicCircuit {
             if (this.InEditMode) {
 				// it deadlocks for some reason if you try to merge more than 1 wire
 				// can't be bothered to understand why
-				var allPoints = this.Project.LogicalCircuit.ConductorMap().Conductors.SelectMany(conductor => conductor.JunctionPoints(2, 2));
+				var allPoints = this.Project.LogicalCircuit.ConductorMap().JunctionPoints(2, 2).Where(point => this.JamAt(point) is null);
 				int merges = 0;
 				foreach(GridPoint point in allPoints) {
                     Wire[]? wires = this.Project.LogicalCircuit.Wires().Where(wire => wire.Point1 == point || wire.Point2 == point).ToArray<Wire>();
@@ -901,6 +901,7 @@ namespace LogicCircuit {
                 }
                 this.ClearSelection();
 
+				// beep to notify that no merges were made; remove if deadlock is resolved
 				if (merges == 0) {
 					Console.Beep(800, 80);
 				}
