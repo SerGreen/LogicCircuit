@@ -431,9 +431,8 @@ namespace LogicCircuit {
 		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
 		public static IEnumerable<EnumDescriptor<LedMatrixType>> MatrixTypes { get { return matrixTypes; } }
 
-		private static readonly IEnumerable<int> ledRange = PinDescriptor.NumberRange(LedMatrix.MinLedCount, LedMatrix.MaxLedCount);
-		public static IEnumerable<int> RowsRange { get { return LedMatrixDescriptor.ledRange; } }
-		public static IEnumerable<int> ColumnsRange { get { return LedMatrixDescriptor.ledRange; } }
+		public static IEnumerable<int> RowsRange { get { return PinDescriptor.NumberRange(LedMatrix.MinLedCount, LedMatrix.MaxLedCountRows); } }
+		public static IEnumerable<int> ColumnsRange { get { return PinDescriptor.NumberRange(LedMatrix.MinLedCount, LedMatrix.MaxLedCountColumns); } }
 
 		public int Rows { get; set; }
 		public int Columns { get; set; }

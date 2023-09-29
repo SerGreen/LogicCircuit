@@ -9,10 +9,15 @@ namespace LogicCircuit {
 		public const int MinBitsPerLed = 1;
 		public const int MaxBitsPerLed = 3;
 		public const int MinLedCount = 1;
-		public const int MaxLedCount = BasePin.MaxBitWidth / LedMatrix.MaxBitsPerLed;
+		public const int MaxLedCountRows = BasePin.MaxBitWidth;
+		public const int MaxLedCountColumns = BasePin.MaxBitWidth / LedMatrix.MaxBitsPerLed;
 
-		public static int Check(int value) {
-			return Math.Max(LedMatrix.MinLedCount, Math.Min(value, LedMatrix.MaxLedCount));
+		public static int CheckRows(int value) {
+			return Math.Max(LedMatrix.MinLedCount, Math.Min(value, LedMatrix.MaxLedCountRows));
+		}
+
+		public static int CheckColumns(int value) {
+			return Math.Max(LedMatrix.MinLedCount, Math.Min(value, LedMatrix.MaxLedCountColumns));
 		}
 
 		public static int CheckColors(int value) {

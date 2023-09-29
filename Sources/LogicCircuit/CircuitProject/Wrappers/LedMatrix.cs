@@ -18,12 +18,12 @@ namespace LogicCircuit {
 		private int fieldRows;
 		public int Rows {
 			get { return this.fieldRows; }
-			set { this.fieldRows = LedMatrix.Check(value); }
+			set { this.fieldRows = LedMatrix.CheckRows(value); }
 		}
 		private int fieldColumns;
 		public int Columns {
 			get { return this.fieldColumns; }
-			set { this.fieldColumns = LedMatrix.Check(value); }
+			set { this.fieldColumns = LedMatrix.CheckColumns(value); }
 		}
 		private int fieldColors;
 		public int Colors {
