@@ -11,7 +11,7 @@ namespace LogicCircuit {
 		public const int MaxBitsPerPixel = 8;
 		public const int MaxWidth = 640;
 		public const int MaxHeight = 480;
-		public const int MaxZoom = 4;
+		public const int MaxZoom = 32;
 
 		public static MemoryOnStart CheckOnStart(MemoryOnStart value) {
 			return (MemoryOnStart.Random <= value && value <= MemoryOnStart.Ones) ? value : MemoryOnStart.Zeros;
